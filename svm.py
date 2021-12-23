@@ -12,20 +12,22 @@ xtrain, ytrain, xtest, ytest = preprocessing("./samples")
 xtrain, ytrain = reduce_set_size(xtrain, ytrain)
 xtest, ytest = reduce_set_size(xtest, ytest)
 
+# Create the model
 clf = SVC()
 
+# Fit and time the model
 start_time = time.time()
 clf.fit(xtrain, ytrain.values.ravel())
 print(
     "The time that took the model to train is %s seconds." % (time.time() - start_time)
 )
 
-
+# Make prediction on the test set
 start_time = time.time()
 ypred = clf.predict(xtest)
 print("The time passed for the prediction is %s seconds." % (time.time() - start_time))
 
-
+# Find accuracies
 ytrain_pred = clf.predict(xtrain)
 train_accur = metrics.accuracy_score(ytrain, ytrain_pred)
 print(f"The accuracy of the model for the train set is: {100*train_accur}%")

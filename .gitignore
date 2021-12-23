@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 
 samples/
+grid_search.py
+temp.py
 
 # C extensions
 *.so
