@@ -8,37 +8,55 @@ from sklearn.model_selection import cross_val_score
 import matplotlib.pyplot as plt
 import time
 
-xtrain, ytrain, xtest, ytest = preprocessing("../samples")
+xtrain, ytrain, xtest, ytest = preprocessing("./samples")
 
 # Reduce the training and testing data to 6000 and 1000 respectively
 xtrain, ytrain = reduce_set_size(xtrain, ytrain)
 xtest, ytest = reduce_set_size(xtest, ytest)
 
-gammavalues = [0.001, 0.01, 0.1, 1, 10]
-
-trainingError = []
-testingError = []
+gammavalues = [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.1, 1]
+exec_times = []
+total_test_acc = []
+total_train_acc = []
+legend = []
 for gamma in gammavalues:
     clf = SVC(kernel="rbf", gamma=gamma)
-    clf = clf.fit(xtrain, ytrain.values.ravel())
-    pred = clf.predict(xtrain)
-    trainingError.append(1 - metrics.accuracy_score(ytrain, pred))
-    pred = clf.predict(xtest)
-    testingError.append(1 - metrics.accuracy_score(ytest, pred))
+    # Start timer
+    start_time = time.time()
 
-plt.plot(trainingError, c="blue")
-plt.plot(testingError, c="red")
-# plt.ylim(0, 0.5)
+    clf = clf.fit(xtrain, ytrain.values.ravel())
+
+    exec_times.append(time.time() - start_time)
+
+    pred = clf.predict(xtrain)
+    total_train_acc.append(metrics.accuracy_score(ytrain, pred))
+
+    pred = clf.predict(xtest)
+    total_test_acc.append(metrics.accuracy_score(ytest, pred))
+
+plot1 = plt.figure(1)
+plt.plot(total_train_acc, c="blue")
+plt.plot(total_test_acc, c="red")
 plt.xticks(range(len(gammavalues)), gammavalues)
-plt.legend(["Training Error", "Testing Error"])
-plt.xlabel("Gamma")
-plt.ylabel("Error")
+plt.legend(["Training Accuracy", "Testing Accuracy"])
+plt.xlabel("gamma")
+plt.ylabel("accuracy")
+plt.title("Train and accuracy for different gamma values")
+
+plot2 = plt.figure(2)
+plt.plot(range(len(gammavalues)), exec_times, "-o")
+plt.xticks(range(len(gammavalues)), gammavalues)
+plt.xlabel("gamma values")
+plt.ylabel("execution times")
+
 plt.show()
 
-# accuracies = []
-# for gamma in gammavalues:
-#     clf = svm.SVC(kernel="rbf", gamma=gamma)
-#     scores = cross_val_score(clf, xtrain, ytrain, cv=10)
-#     accuracies.append(scores.mean())
+accuracies = []
+for gamma in gammavalues:
+    clf = SVC(kernel="rbf", gamma=gamma)
+    scores = cross_val_score(clf, xtrain, ytrain.values.ravel(), cv=10)
+    accuracies.append(scores.mean())
 
-# print("Best gamma: ", gammavalues[np.argmax(accuracies)])
+print(
+    f"Best gamma: {gammavalues[np.argmax(accuracies)]} with best accuracy: {100*max(accuracies)}%"
+)

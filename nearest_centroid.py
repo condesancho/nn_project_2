@@ -8,7 +8,7 @@ import numpy as np
 import time
 
 # Import data from the folder
-mndata = MNIST("../samples")
+mndata = MNIST("./samples")
 
 xtrain, ytrain = mndata.load_training()
 xtest, ytest = mndata.load_testing()
@@ -27,7 +27,7 @@ pred = model.predict(xtest)
 
 # # Check the first 10 images
 print("The first 10 predicted values are:", pred[:10].tolist())
-print("The first 10 actual values are:", ytest[:10])
+print("The first 10 actual values are:", ytest[:10].tolist())
 
 acc = accuracy_score(ytest, pred)
 

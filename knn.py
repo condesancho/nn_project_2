@@ -8,7 +8,7 @@ import numpy as np
 import time
 
 # Import data from the folder
-mndata = MNIST("../samples")
+mndata = MNIST("./samples")
 
 xtrain, ytrain = mndata.load_training()
 xtest, ytest = mndata.load_testing()
@@ -17,13 +17,13 @@ xtest, ytest = mndata.load_testing()
 ytrain = np.array(ytrain) % 2
 ytest = np.array(ytest) % 2
 
-# # Check the first 10 images
-# model = KNeighborsClassifier(n_neighbors=1)
-# model.fit(xtrain, ytrain)
+# Check the first 10 images
+model = KNeighborsClassifier(n_neighbors=1)
+model.fit(xtrain, ytrain)
 
-# pred = model.predict(xtest)
-# print('The first 10 predicted values are:', pred[:10].tolist())
-# print('The first 10 actual values are:', ytest[:10])
+pred = model.predict(xtest)
+print("The first 10 predicted values are:", pred[:10].tolist())
+print("The first 10 actual values are:", ytest[:10].tolist())
 
 for k in [1, 3, 5, 7, 9]:
     # Start timer

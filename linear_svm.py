@@ -5,7 +5,7 @@ from sklearn import metrics
 from preprocessing import preprocessing
 import time
 
-xtrain, ytrain, xtest, ytest = preprocessing("../samples")
+xtrain, ytrain, xtest, ytest = preprocessing("./samples")
 
 clf = LinearSVC(max_iter=2000)
 

@@ -6,7 +6,7 @@ from sklearn import metrics
 from preprocessing import preprocessing, reduce_set_size
 import time
 
-xtrain, ytrain, xtest, ytest = preprocessing("../samples", pca=False, scale=False)
+xtrain, ytrain, xtest, ytest = preprocessing("./samples")
 
 # Reduce the training and testing data to 6000 and 1000 respectively
 xtrain, ytrain = reduce_set_size(xtrain, ytrain)
